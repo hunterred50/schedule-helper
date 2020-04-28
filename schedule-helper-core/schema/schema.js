@@ -1,5 +1,7 @@
 const graphql = require('graphql');
 const _ = require('lodash');
+const Item = require('../models/item');
+const User = require('../models/user');
 
 const { 
   GraphQLSchema, 
@@ -8,22 +10,8 @@ const {
   GraphQLString, 
   GraphQLInt,
   GraphQLList,
+  GraphQLNonNull
 } = graphql;
-
-var items = [
-  { name: 'work on schedule app', id: '1', userId: '1' },
-  { name: 'yoga', id: '2', userId: '1' },
-  { name: 'run', id: '3', userId: '1' },
-  { name: 'big meal', id: '4', userId: '1' },
-  { name: 'poopoopeepee', id: '5', userId: '2' },
-  { name: 'drum', id: '6', userId: '3' }
-];
-
-var users = [
-  { name: 'hunter', id: '1', email: 'hunter@mail.com' },
-  { name: 'nick', id: '2' },
-  { name: 'michael', id: '3' },
-]
 
 const ItemType = new GraphQLObjectType({
   name: 'ToDoItem',
@@ -39,7 +27,8 @@ const ItemType = new GraphQLObjectType({
       type: UserType,
       resolve(parent, args) {
         console.log(parent);
-        return _.find(users, { id: parent.userId });
+        // return _.find(users, { id: parent.userId });
+        return User.findById(parent.userId);
       }
     }
   })
@@ -52,10 +41,11 @@ const UserType = new GraphQLObjectType({
     name: { type: GraphQLString },
     email: { type: GraphQLString },
     birthdate: { type: GraphQLString },
-    todoitems: {
+    items: {
       type: new GraphQLList(ItemType),
       resolve(parent, args) {
-        return _.filter(items, { userId: parent.id });
+        // return _.filter(items, { userId: parent.id });
+        return Item.find({ userId: parent.id });
       }
     }
   })
@@ -69,31 +59,76 @@ const RootQuery = new GraphQLObjectType({
       args: { id: { type: GraphQLID }},
       resolve(parent, args){
         // code to get data from db / other source
-        return _.find(items, { id: args.id });
+        // return _.find(items, { id: args.id });
+        return Item.findById(args.id);
       }
     },
     user: {
       type: UserType,
       args: { id: { type: GraphQLID}},
       resolve(parent, args){
-        return _.find(users, { id: args.id });
+        // return _.find(users, { id: args.id });
+        return User.findById(args.id);
       }
     },
     items: {
       type: new GraphQLList(ItemType),
       resolve(parent, args) {
-        return items;
+        // return items;
+        return Item.find({});
       }
     },
     users: {
       type: new GraphQLList(UserType),
       resolve(parent, args) {
-        return users;
+        // return users;
+        return User.find({});
+      }
+    }
+  }
+});
+
+const Mutation = new GraphQLObjectType({
+  name: 'Mutation',
+  fields: {
+    addUser: {
+      type: UserType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        email: { type: GraphQLString }
+      },
+      resolve(parent, args){
+        let user = new User({
+          name: args.name,
+          email: args.email
+        });
+        return user.save();
+      }
+    },
+    addItem: {
+      type: ItemType,
+      args: {
+        name: { type: new GraphQLNonNull(GraphQLString) },
+        description: { type: GraphQLString },
+        category: { type: GraphQLString },
+        project: { type: GraphQLString },
+        userId: { type: new GraphQLNonNull(GraphQLID) },
+      },
+      resolve(parent, args){
+        let item = new Item({
+          name: args.name,
+          description: args.description,
+          category: args.category,
+          project: args.project,
+          userId: args.userId
+        });
+        return item.save();
       }
     }
   }
 })
 
 module.exports = new GraphQLSchema({
-  query: RootQuery
+  query: RootQuery,
+  mutation: Mutation
 });
