@@ -54,7 +54,7 @@ const UserType = new GraphQLObjectType({
 const RootQuery = new GraphQLObjectType({
   name: 'RootQueryType',
   fields: {
-    todoitem: {
+    item: {
       type: ItemType,
       args: { id: { type: GraphQLID }},
       resolve(parent, args){
