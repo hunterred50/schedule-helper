@@ -4,6 +4,7 @@ import { ApolloProvider } from 'react-apollo';
 
 import ItemList from './components/ItemList';
 import AddItem from './components/AddItem';
+import SidePanel from './components/SidePanel';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql'
@@ -16,6 +17,7 @@ function App() {
         <h1>Schedule-helper</h1>
         <AddItem />
         <ItemList />
+        <SidePanel />
       </div>
     </ApolloProvider>
   );
