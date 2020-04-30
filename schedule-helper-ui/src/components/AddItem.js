@@ -8,6 +8,8 @@ const AddItem = (props) => {
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
   const [project, setProject] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [duration, setDuration] = useState("");
   const [userId, setUserId] = useState("");
 
   // let state = {name, description, category, project, userId};
@@ -25,12 +27,15 @@ const AddItem = (props) => {
 
   function submitForm(e){
     e.preventDefault();
+    console.log("props " + props);
     props.addItemMutation({
       variables: {
         name: name,
         description: description,
         category: category,
         project: project,
+        startTime: startTime,
+        duration: duration,
         userId: userId
       },
       refetchQueries: [{ query: getItemsQuery}]
@@ -52,6 +57,16 @@ const AddItem = (props) => {
       <div className="field">
         <label>Category (optional):</label>
         <input type="text" onChange={ e => setCategory(e.target.value)}/>
+      </div>
+
+      <div className="field">
+        <label>Start time:</label>
+        <input type="text" onChange={ e => setStartTime(e.target.value)}/>
+      </div>
+
+      <div className="field">
+        <label>duration:</label>
+        <input type="text" onChange={ e => setDuration(e.target.value)}/>
       </div>
 
       <div className="field">

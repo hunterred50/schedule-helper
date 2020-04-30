@@ -6,12 +6,15 @@ const ItemDetails = (props) => {
   function displayItemDetails() {
     const { item } = props.data;
     if(item) {
+      console.log(item);
       return(
         <div>
           <h2>{ item.name }</h2>
           <h3>{ item.user.name }</h3>
           <p>{ item.description }</p>
           <p>{ item.category }</p>
+          <p>{ item.startTime }</p>
+          <p>{ item.duration }</p>
           <ul className="other-items">
             {
               item.user.items.map(thing => {

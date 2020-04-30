@@ -5,6 +5,8 @@ const getItemsQuery = gql`
     items{
       name
       id
+      startTime
+      duration
     }
   }
 `
@@ -17,6 +19,8 @@ const getItemQuery = gql`
       description
       category
       project
+      startTime
+      duration
       user {
         id
         name
@@ -40,12 +44,20 @@ const getUsersQuery = gql`
 `
 
 const addItemMutation = gql`
-  mutation($name: String!, $description: String, $category: String, $project: String, $userId: ID!) {
-    addItem(name: $name, description: $description, category: $category, project: $project, userId: $userId){
+  mutation($name: String!, $description: String, $category: String, $project: String, $startTime: String, $duration: Number, $userId: ID!) {
+    addItem(name: $name, description: $description, category: $category, project: $project, startTime: $startTime, userId: $userId){
       name
       id
     }
   }
 `
 
-export { getItemsQuery, getItemQuery, getUsersQuery, addItemMutation };
+const removeItemMutation = gql`
+  mutation($id: ID!) {
+    removeItem(id: $id) {
+      id
+    }
+  }
+`
+
+export { getItemsQuery, getItemQuery, getUsersQuery, addItemMutation, removeItemMutation };
