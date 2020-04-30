@@ -112,6 +112,7 @@ const Mutation = new GraphQLObjectType({
         description: { type: GraphQLString },
         category: { type: GraphQLString },
         project: { type: GraphQLString },
+        startTime: { type: GraphQLString },
         userId: { type: new GraphQLNonNull(GraphQLID) },
       },
       resolve(parent, args){
@@ -120,9 +121,20 @@ const Mutation = new GraphQLObjectType({
           description: args.description,
           category: args.category,
           project: args.project,
+          startTime: args.startTime,
           userId: args.userId
         });
+        console.log(item);
         return item.save();
+      }
+    },
+    removeItem: {
+      type: ItemType,
+      args: {
+        id: { type: new GraphQLNonNull(GraphQLID) }
+      },
+      resolve(parent, args){
+        return Item.findByIdAndDelete(args.id);
       }
     }
   }
