@@ -6,6 +6,8 @@ const itemSchema = new Schema({
   description: String,
   category: String,
   project: String,
+  startTime: Number,
+  duration: Number,
   userId: String
 })
 
