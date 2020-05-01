@@ -5,6 +5,8 @@ import { ApolloProvider } from 'react-apollo';
 import ItemList from './components/ItemList';
 import AddItem from './components/AddItem';
 import SidePanel from './components/SidePanel';
+import Navbar from './components/Navbar/Navbar';
+import Schedule from './components/Schedule';
 
 const client = new ApolloClient({
   uri: 'http://localhost:4000/graphql'
@@ -13,11 +15,12 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div id="main">
-        <h1>Schedule-helper</h1>
-        <AddItem />
-        <ItemList />
+      <div className="main">
+        <Navbar />
+        <div className="mid">
+        <Schedule />
         <SidePanel />
+        </div>
       </div>
     </ApolloProvider>
   );

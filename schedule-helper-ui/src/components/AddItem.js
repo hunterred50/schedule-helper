@@ -43,7 +43,7 @@ const AddItem = (props) => {
   }
 
   return (
-    <form id="add-item" onSubmit={submitForm}>
+    <form className="add-item" onSubmit={submitForm}>
       <div className="field">
         <label>Item name:</label>
         <input type="text" onChange={ e => setName(e.target.value)}/>

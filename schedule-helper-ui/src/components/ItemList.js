@@ -38,8 +38,8 @@ const ItemList = (props) => {
   }
 
   return (
-    <div>
-      <ul id="item-list">
+    <div className="item-list">
+      <ul>
         { displayItems() }
       </ul>
       <ItemDetails itemId={selected} />
