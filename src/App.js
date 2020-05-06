@@ -9,7 +9,7 @@ import Navbar from './components/Navbar/Navbar';
 import Schedule from './components/Schedule';
 
 const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql'
+  uri: 'https://schedule-helper-core.hunterred50.now.sh/graphql'//'http://localhost:4000/graphql'
 })
 
 function App() {
